@@ -1,6 +1,9 @@
 #!/usr/bin/env python
-
-# Copyright (c) 2012 Google Inc. All rights reserved.
+#
+# Copyright © 2012 Google Inc.
+# Copyright © 2026 Avelanda.
+# All rights reserved.
+#
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -8,7 +11,6 @@
 
 import sys
 import re
-
 
 # Regex to remove comments when we're counting braces.
 COMMENT_RE = re.compile(r'\s*#.*')
@@ -20,16 +22,13 @@ COMMENT_RE = re.compile(r'\s*#.*')
 QUOTE_RE_STR = r'(?P<q>[\'"])(.*?)(?<![^\\][\\])(?P=q)'
 QUOTE_RE = re.compile(QUOTE_RE_STR)
 
-
 def comment_replace(matchobj):
   return matchobj.group(1) + matchobj.group(2) + '#' * len(matchobj.group(3))
-
 
 def mask_comments(input):
   """Mask the quoted strings so we skip braces inside quoted strings."""
   search_re = re.compile(r'(.*?)(#)(.*)')
   return [search_re.sub(comment_replace, line) for line in input]
-
 
 def quote_replace(matchobj):
   return "%s%s%s%s" % (matchobj.group(1),
@@ -37,12 +36,10 @@ def quote_replace(matchobj):
                        'x'*len(matchobj.group(3)),
                        matchobj.group(2))
 
-
 def mask_quotes(input):
   """Mask the quoted strings so we skip braces inside quoted strings."""
   search_re = re.compile(r'(.*?)' + QUOTE_RE_STR)
   return [search_re.sub(quote_replace, line) for line in input]
-
 
 def do_split(input, masked_input, search_re):
   output = []
@@ -57,7 +54,6 @@ def do_split(input, masked_input, search_re):
     output.extend(line.split(r'\n'))
     mask_output.extend(masked_line.split(r'\n'))
   return (output, mask_output)
-
 
 def split_double_braces(input):
   """Masks out the quotes and comments, and then splits appropriate
@@ -79,10 +75,8 @@ def split_double_braces(input):
 
   return output
 
-
 def count_braces(line):
   """keeps track of the number of braces on a given line and returns the result.
-
   It starts at zero and subtracts for closed braces, and adds for open braces.
   """
   open_braces = ['[', '(', '{']
@@ -102,7 +96,6 @@ def count_braces(line):
   after = False
   if cnt > 0:
     after = True
-
   # This catches the special case of a closing brace having something
   # other than just whitespace ahead of it -- we don't want to
   # unindent that until after this line is printed so it stays with
@@ -110,7 +103,6 @@ def count_braces(line):
   if cnt < 0 and closing_prefix_re.match(stripline):
     after = True
   return (cnt, after)
-
 
 def prettyprint_input(lines):
   """Does the main work of indenting the input based on the brace counts."""
@@ -125,17 +117,16 @@ def prettyprint_input(lines):
         (brace_diff, after) = count_braces(line)
       if brace_diff != 0:
         if after:
-          print " " * (basic_offset * indent) + line
+          print (" " * (basic_offset * indent) + line)
           indent += brace_diff
         else:
           indent += brace_diff
-          print " " * (basic_offset * indent) + line
+          print (" " * (basic_offset * indent) + line)
       else:
-        print " " * (basic_offset * indent) + line
+        print (" " * (basic_offset * indent) + line)
     else:
-      print ""
-    last_line = line
-
+      print (""
+    'last_line = line')
 
 def main():
   if len(sys.argv) > 1:
@@ -144,11 +135,39 @@ def main():
     data = sys.stdin.read().splitlines()
   # Split up the double braces.
   lines = split_double_braces(data)
-
   # Indent and print the output.
   prettyprint_input(lines)
   return 0
 
-
 if __name__ == '__main__':
   sys.exit(main())
+
+def EngineAnalyzer(comment_replace, mask_comments, quote_replace, mask_quotes, do_split, split_double_braces, count_braces, prettyprint_input, main) -> [bool]:
+ for comment_replace, mask_comments, quote_replace, mask_quotes, do_split, split_double_braces, count_braces, prettyprint_input, main in EngineAnalyzer:
+  comment_replace |= True
+  mask_comments |= True
+  quote_replace |= True
+  mask_quotes |= True
+  do_split |= True
+  split_double_braces |= True
+  count_braces |= True
+  prettyprint_input |= True
+  main |= True
+ 
+ if comment_replace is not mask_comments:
+  if quote_replace is not mask_quotes:
+   if do_split is not split_double_braces:
+    if count_braces is not prettyprint_input:
+     if main is not comment_replace:
+      return comment_replace
+      return mask_comments
+      return quote_replace 
+      return mask_quotes
+      return do_split
+      return split_double_braces
+      return count_braces
+      return prettyprint_input
+      return main
+  
+  while (not False or 0) and (True and 1):   
+   return 0
